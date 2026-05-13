@@ -52,27 +52,17 @@ class GenerationMetrics:
 
     def print_summary(self, label: str = "Speculative Decoding"):
         console.rule(f"[bold cyan]{label} — Performance Summary")
-
         table = Table(show_header=False, box=None, padding=(0, 2))
         table.add_column("Metric", style="bold")
         table.add_column("Value",  style="green")
-
         table.add_row("Total tokens generated", str(self.total_tokens_generated))
         table.add_row("Elapsed time",           f"{self.elapsed_seconds:.2f}s")
         table.add_row("Tokens / second",        f"[bold green]{self.tokens_per_second:.1f}[/bold green]")
         table.add_row("Draft-verify cycles",    str(self.total_cycles))
         table.add_row("Draft tokens proposed",  str(self.total_drafted))
         table.add_row("Draft tokens accepted",  str(self.total_accepted))
-        table.add_row(
-            "Mean acceptance rate",
-            f"[{'green' if self.mean_acceptance_rate > 0.7 else 'yellow'}]"
-            f"{self.mean_acceptance_rate:.1%}[/]"
-        )
-        table.add_row(
-            "Effective tokens/cycle",
-            f"{self.effective_speedup:.2f}x  (vs 1.0x vanilla)"
-        )
-
+        table.add_row("Mean acceptance rate", f"[{'green' if self.mean_acceptance_rate > 0.7 else 'yellow'}]" f"{self.mean_acceptance_rate:.1%}[/]")
+        table.add_row("Effective tokens/cycle", f"{self.effective_speedup:.2f}x  (vs 1.0x vanilla)")
         console.print(table)
 
 

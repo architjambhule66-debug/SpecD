@@ -13,7 +13,6 @@ def _quant_config(precision: str):
         return BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type="nf4",)
     return None
 
-
 def _torch_dtype(precision: str):
     if precision in ("bf16",):
         return torch.bfloat16
@@ -21,13 +20,11 @@ def _torch_dtype(precision: str):
         return torch.bfloat16
     return torch.float32
 
-
 def load_tokenizer(model_id: str = TARGET_MODEL_ID):
     console.print(f"[cyan]Loading tokenizer from[/cyan] [bold]{model_id}[/bold]")
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     tokenizer.pad_token = tokenizer.eos_token
     return tokenizer
-
 
 def load_model(model_id: str, precision: str, device_map: str, label: str):
     quant_cfg = _quant_config(precision)
@@ -42,7 +39,6 @@ def load_model(model_id: str, precision: str, device_map: str, label: str):
     console.print(f"{label} loaded — [green]{param_count:.1f}B params[/green]")
     return model
 
-
 def load_both(precision: str = DEFAULT_PRECISION):
     console.rule("[bold blue]Speculative Decoding — Model Loader")
     tokenizer = load_tokenizer(TARGET_MODEL_ID)
@@ -51,7 +47,6 @@ def load_both(precision: str = DEFAULT_PRECISION):
     console.rule("[bold green]Both models ready")
     _print_vram_usage()
     return tokenizer, draft_model, target_model
-
 
 def _print_vram_usage():
     if not torch.cuda.is_available():
